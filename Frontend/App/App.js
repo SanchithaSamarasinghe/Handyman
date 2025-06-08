@@ -4,9 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Home from './components/Home';
-import ProfileTap from './components/ProfileTap';
-import UpdateStudent from './components/UpdateStudent';
-import AddStudent from './components/AddStudent';
+import RegisterScreen from './components/RegisterScreen';
+
+
 //import LoginScreen from './src/screens/LoginScreen';
 
 export default function App() {
@@ -33,10 +33,8 @@ export default function App() {
             }} 
           />
           
-          <Stack.Screen name='profiletap' component={ProfileTap} options={{ title: "Student Health Profile" }} />
-          <Stack.Screen name='UpdateStudent' component={UpdateStudent} options={{ title: "Student update Profile" }} />
-          <Stack.Screen name='AddStudent' component={AddStudent} options={{ title: "Student Add Profile" }} />
-          
+          <Stack.Screen name='RegisterScreen' component={RegisterScreen} options={{ title: "Sign Up for Work Base" }} />
+        
         </Stack.Navigator>
       </NavigationContainer>
     </SafeAreaProvider>
