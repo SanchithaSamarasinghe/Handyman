@@ -14,7 +14,16 @@ export default function Home() {
   const login = async () => {
     try {
       const response = await axios.post('/auth/login', { email, password });
-      setSnackbarMsg(response.data || 'Login successful.');
+            const role = response.data;
+
+            if (role === 'PROFESSIONAL') {
+            navigation.navigate('ProfessionalMainScreen');
+            } else if (role === 'CUSTOMER') {
+            navigation.navigate('CustomerMainScreen');
+            } else {
+            setSnackbarMsg('Unexpected role.');
+            }
+
     } catch (err) {
       setSnackbarMsg(err.response?.data || 'Invalid Email or Password');
     } finally {
@@ -33,7 +42,7 @@ export default function Home() {
           <TextInput label="Email" value={email} onChangeText={setEmail} />
           <TextInput label="Password" value={password} onChangeText={setPassword} secureTextEntry />
 
-          <Button style={styles.button1} onPress={login}>Customer Login</Button>
+          <Button style={styles.button1} onPress={login}>Login</Button>
           <Button style={styles.button2} onPress={() => navigation.navigate('RegisterScreen')}>Register</Button>
 
           <Snackbar visible={snackbarVisible} onDismiss={() => setSnackbarVisible(false)}>
