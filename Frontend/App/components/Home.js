@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Image, KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from "react-native";
 import { Button, Snackbar, Text, TextInput } from "react-native-paper";
 import axios from '../src/api/axiosConfig';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Home() {
   const navigation = useNavigation();
@@ -11,25 +12,30 @@ export default function Home() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMsg, setSnackbarMsg] = useState('');
 
-  const login = async () => {
-    try {
-      const response = await axios.post('/auth/login', { email, password });
-            const role = response.data;
+  
 
-            if (role === 'PROFESSIONAL') {
-            navigation.navigate('ProfessionalMainScreen');
-            } else if (role === 'CUSTOMER') {
-            navigation.navigate('CustomerMainScreen');
-            } else {
-            setSnackbarMsg('Unexpected role.');
-            }
+const login = async () => {
+  try {
+    const response = await axios.post('/auth/login', { email, password });
+    const role = response.data;
 
-    } catch (err) {
-      setSnackbarMsg(err.response?.data || 'Invalid Email or Password');
-    } finally {
-      setSnackbarVisible(true);
+    await AsyncStorage.setItem('userEmail', email); // ✅ save login email
+
+    if (role === 'PROFESSIONAL') {
+      navigation.navigate('ProfessionalMainScreen');
+    } else if (role === 'CUSTOMER') {
+      navigation.navigate('CustomerMainScreen');
+    } else {
+      setSnackbarMsg('Unexpected role.');
     }
-  };
+
+  } catch (err) {
+    setSnackbarMsg(err.response?.data || 'Invalid Email or Password');
+  } finally {
+    setSnackbarVisible(true);
+  }
+};
+
 
   return (
     <KeyboardAvoidingView style={styles.keyboardAvoidingView}>

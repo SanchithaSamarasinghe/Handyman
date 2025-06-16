@@ -37,6 +37,18 @@ public class UserService {
 	            return "Invalid email or password.";
 	        }
 
-	        return "Login successful.";
+	        return user.getRole();
 	    }
+	    public User getProfile(String email) {
+	        return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+	    }
+
+	    public User updateProfile(String email, User updatedData) {
+	        User user = getProfile(email);
+	        user.setDescription(updatedData.getDescription());
+	        user.setProfessions(updatedData.getProfessions());
+	        user.setImageBase64(updatedData.getImageBase64());
+	        return userRepository.save(user);
+	    }
+
 }
