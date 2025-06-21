@@ -7,8 +7,10 @@ import Home from './components/Home';
 import RegisterScreen from './components/RegisterScreen';
 import ProfessionalMainScreen from './components/navigation/ProfessionalTabs';
 import CustomerMainScreen from './components/navigation/CustomerTabs';
+import ActiveProfessionals from './components/customer/ActiveProfessionals';
 
-//import LoginScreen from './src/screens/LoginScreen';
+
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -46,6 +48,11 @@ export default function App() {
             name='CustomerMainScreen'
             component={CustomerMainScreen}
             options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="ActiveProfessionals"
+            component={ActiveProfessionals}
+            options={{ headerTitle: 'Available Professionals' }}
           />
         </Stack.Navigator>
       </NavigationContainer>

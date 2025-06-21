@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, FlatList, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import Header from '../common/Header';
+import { useNavigation } from '@react-navigation/native';
 
-const professions = [
+
+const professions =  [
   { id: '1', name: 'Electrician', image: require('../../assets/HM/h8.png') },
   { id: '2', name: 'Plumber', image: require('../../assets/HM/h1.png') },
   { id: '3', name: 'Carpenter', image: require('../../assets/HM/h9.png') },
@@ -25,13 +27,17 @@ const professions = [
 
 export default function CustomHome() {
   const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
 
   const filteredProfessions = professions.filter((item) =>
     item.name.toLowerCase().includes(searchText.toLowerCase())
   );
 
   const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.button} onPress={() => alert(`Clicked on ${item.name}`)}>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => navigation.navigate('ActiveProfessionals', { profession: item.name })}
+    >
       <Image source={item.image} style={styles.image} />
       <Text style={styles.name}>{item.name}</Text>
     </TouchableOpacity>

@@ -1,12 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
+import { ScrollView, View, StyleSheet, Image, TouchableOpacity, Alert } from 'react-native';
 import { TextInput, Button, Text, Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import axios from '../../src/api/axiosConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Header from '../common/Header';
 
-const professionOptions = ['Electrician', 'Plumber', 'Carpenter', 'Painter'];
+const professionOptions = [
+  'Electrician',
+  'Plumber',
+  'Carpenter',
+  'Painter',
+  'Cleaner',
+  'Gardener',
+  'Mover',
+  'BodyGuard',
+  'Driver',
+  'Chef',
+  'Vediocrew',
+  'HairDresser',
+  'Security Guard',
+  'Machanic',
+  'Fixer',
+  'Cable fixer',
+  'Electric fixer'
+];
 
 export default function Profile() {
   //const userEmail = 'sanchitha@mail.com'; // 🔁 Replace this with actual logged-in user's email
@@ -96,59 +114,61 @@ export default function Profile() {
   return (
     <View style={styles.container}>
       <Header />
-      {/* Profile Picture */}
-      <TouchableOpacity onPress={pickImage} style={styles.avatarWrapper}>
-        {imageUri ? (
-          <Image source={{ uri: imageUri }} style={styles.avatar} />
-        ) : (
-          <View style={styles.placeholder}>
-            <Text>Tap to Upload</Text>
-          </View>
-        )}
-      </TouchableOpacity>
-      
-      {/* Save Button */}
-      <Button mode="contained" onPress={saveProfile} style={styles.button}>
-        Save Profile
-      </Button>
+      <ScrollView>
+        {/* Profile Picture */}
+        <TouchableOpacity onPress={pickImage} style={styles.avatarWrapper}>
+          {imageUri ? (
+            <Image source={{ uri: imageUri }} style={styles.avatar} />
+          ) : (
+            <View style={styles.placeholder}>
+              <Text>Tap to Upload</Text>
+            </View>
+          )}
+        </TouchableOpacity>
+        
+        {/* Save Button */}
+        <Button mode="contained" onPress={saveProfile} style={styles.button}>
+          Save Profile
+        </Button>
 
-      {/* Name and ID */}
-      <TextInput
-        label="Name"
-        value={displayName}
-        style={styles.input}
-        disabled
-      />
-      <TextInput
-        label="ID"
-        value={id?.toString()}
-        style={styles.input}
-        disabled
-      />
+        {/* Name and ID */}
+        <TextInput
+          label="Name"
+          value={displayName}
+          style={styles.input}
+          disabled
+        />
+        <TextInput
+          label="ID"
+          value={id?.toString()}
+          style={styles.input}
+          disabled
+        />
 
-      {/* Professions */}
-      <Text style={styles.label}>Select Professions</Text>
-      <View style={styles.checkboxContainer}>
-        {professionOptions.map((option) => (
-          <View key={option} style={styles.checkboxItem}>
-            <Checkbox
-              status={selectedProfessions.includes(option) ? 'checked' : 'unchecked'}
-              onPress={() => toggleProfession(option)}
-            />
-            <Text>{option}</Text>
-          </View>
-        ))}
-      </View>
+        {/* Professions */}
+        <Text style={styles.label}>Select Professions</Text>
+        <View style={styles.checkboxContainer}>
+          {professionOptions.map((option) => (
+            <View key={option} style={styles.checkboxItem}>
+              <Checkbox
+                status={selectedProfessions.includes(option) ? 'checked' : 'unchecked'}
+                onPress={() => toggleProfession(option)}
+              />
+              <Text>{option}</Text>
+            </View>
+          ))}
+        </View>
 
-      {/* Description */}
-      <TextInput
-        label="Description"
-        value={description}
-        onChangeText={setDescription}
-        multiline
-        numberOfLines={4}
-        style={[styles.input, { height: 100 }]}
-      />
+        {/* Description */}
+        <TextInput
+          label="Description"
+          value={description}
+          onChangeText={setDescription}
+          multiline
+          numberOfLines={4}
+          style={[styles.input, { height: 100 }]}
+        />
+      </ScrollView>
     </View>
   );
 }

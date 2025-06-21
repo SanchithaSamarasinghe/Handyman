@@ -1,5 +1,8 @@
 package com.backend.handyman.service;
 import com.backend.handyman.model.User;
+import com.backend.handyman.repository.BookingRepo; // ✅ Add this import
+import com.backend.handyman.model.Booking;                // ✅ Add this import
+import java.util.List;
 
 import com.backend.handyman.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +13,9 @@ import java.util.Optional;
 public class UserService {
 	 @Autowired
 	    private UserRepository userRepository;
-
+	 @Autowired
+	    private BookingRepo bookingRepository; 
+	 
 	    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
 	    public String registerUser(User user) {
@@ -49,6 +54,13 @@ public class UserService {
 	        user.setProfessions(updatedData.getProfessions());
 	        user.setImageBase64(updatedData.getImageBase64());
 	        return userRepository.save(user);
+	    }
+	    public List<User> getAvailableProfessionals(String profession, String date) {
+	        List<User> professionals = userRepository.findProfessionalsByProfession(profession);
+
+	        return professionals.stream()
+	                .filter(pro -> !bookingRepository.existsByProfessionalEmailAndDate(pro.getEmail(), date))
+	                .toList();
 	    }
 
 }

@@ -14,7 +14,9 @@ public class SecurityConfig {
             .csrf().disable()
             .authorizeHttpRequests()
                 .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/profile/**").permitAll() // ✅ Add this line
+                .requestMatchers("/profile/**").permitAll()
+                .requestMatchers("/booking/**").permitAll()
+                // ✅ Add this line
                 .anyRequest().authenticated()
             .and()
             .httpBasic();

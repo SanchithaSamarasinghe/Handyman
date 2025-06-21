@@ -5,6 +5,7 @@ import com.backend.handyman.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/profile")
@@ -13,6 +14,13 @@ public class ProfileController {
 
     @Autowired
     private UserService userService;
+    
+    @GetMapping("/professionals/available")
+    public ResponseEntity<List<User>> getAvailableProfessionals(
+            @RequestParam String profession,
+            @RequestParam String date) {
+        return ResponseEntity.ok(userService.getAvailableProfessionals(profession, date));
+    }
 
     // Fetch user profile by email
     @GetMapping("/{email}")
