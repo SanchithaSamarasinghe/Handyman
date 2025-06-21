@@ -4,7 +4,7 @@ import { TextInput, Button, Text, Checkbox } from 'react-native-paper';
 import * as ImagePicker from 'expo-image-picker';
 import axios from '../../src/api/axiosConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import Header from '../common/Header';
 
 const professionOptions = ['Electrician', 'Plumber', 'Carpenter', 'Painter'];
 
@@ -20,42 +20,39 @@ export default function Profile() {
   const [userEmail, setUserEmail] = useState(null);
 
   useEffect(() => {
-  const loadEmailAndProfile = async () => {
-    try {
-      const email = await AsyncStorage.getItem('userEmail');
-      if (email) {
-        setUserEmail(email);              // ✅ save to state
-        await fetchProfile(email);        // ✅ only call if not null
-      } else {
-        console.warn('No email found in storage');
+    const loadEmailAndProfile = async () => {
+      try {
+        const email = await AsyncStorage.getItem('userEmail');
+        if (email) {
+          setUserEmail(email);              // ✅ save to state
+          await fetchProfile(email);        // ✅ only call if not null
+        } else {
+          console.warn('No email found in storage');
+        }
+      } catch (err) {
+        console.error('Failed to load email from storage', err);
       }
-    } catch (err) {
-      console.error('Failed to load email from storage', err);
+    };
+
+    loadEmailAndProfile();
+  }, []);
+
+  const fetchProfile = async (email) => {
+    try {
+      const response = await axios.get(`/profile/${email}`);
+      const data = response.data;
+      setDisplayName(data.name);
+      setId(data.id);
+      setDescription(data.description || '');
+      setSelectedProfessions(data.professions || []);
+      if (data.imageBase64) {
+        setImageUri(`data:image/jpeg;base64,${data.imageBase64}`);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert("Failed to load profile");
     }
   };
-
-  loadEmailAndProfile();
-}, []);
-
-
-
- const fetchProfile = async (email) => {
-  try {
-    const response = await axios.get(`/profile/${email}`);
-    const data = response.data;
-    setDisplayName(data.name);
-    setId(data.id);
-    setDescription(data.description || '');
-    setSelectedProfessions(data.professions || []);
-    if (data.imageBase64) {
-      setImageUri(`data:image/jpeg;base64,${data.imageBase64}`);
-    }
-  } catch (error) {
-    console.error(error);
-    Alert.alert("Failed to load profile");
-  }
-};
-
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -98,6 +95,7 @@ export default function Profile() {
 
   return (
     <View style={styles.container}>
+      <Header />
       {/* Profile Picture */}
       <TouchableOpacity onPress={pickImage} style={styles.avatarWrapper}>
         {imageUri ? (
@@ -109,7 +107,7 @@ export default function Profile() {
         )}
       </TouchableOpacity>
       
-        {/* Save Button */}
+      {/* Save Button */}
       <Button mode="contained" onPress={saveProfile} style={styles.button}>
         Save Profile
       </Button>
@@ -151,8 +149,6 @@ export default function Profile() {
         numberOfLines={4}
         style={[styles.input, { height: 100 }]}
       />
-
-      
     </View>
   );
 }
