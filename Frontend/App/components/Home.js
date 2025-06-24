@@ -24,7 +24,7 @@ const login = async () => {
     if (role === 'PROFESSIONAL') {
       navigation.navigate('ProfessionalMainScreen');
     } else if (role === 'CUSTOMER') {
-      navigation.navigate('CustomerMainScreen');
+      navigation.navigate('CustomerMainScreen', { email });
     } else {
       setSnackbarMsg('Unexpected role.');
     }

@@ -25,7 +25,7 @@ const professions =  [
   { id: '17', name: 'Electric fixer', image: require('../../assets/HM/h6.png') },
 ];
 
-export default function CustomHome() {
+export default function CustomHome({ email }) {
   const [searchText, setSearchText] = useState('');
   const navigation = useNavigation();
 
@@ -36,7 +36,11 @@ export default function CustomHome() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.button}
-      onPress={() => navigation.navigate('ActiveProfessionals', { profession: item.name })}
+     onPress={() => navigation.navigate('ActiveProfessionals', {
+  profession: item.name,
+  customerEmail: email, // ✅ pass customer email here
+})}
+
     >
       <Image source={item.image} style={styles.image} />
       <Text style={styles.name}>{item.name}</Text>

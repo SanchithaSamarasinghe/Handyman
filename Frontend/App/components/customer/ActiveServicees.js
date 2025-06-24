@@ -3,7 +3,7 @@ import { View, Text, FlatList, Image, StyleSheet } from 'react-native';
 import Header from '../common/Header';
 import axios from '../../src/api/axiosConfig';
 
-export default function ActiveServicees() {
+export default function ActiveServicees({ email }) {
   const [bookedProfessionals, setBookedProfessionals] = useState([]);
 
   useEffect(() => {
@@ -13,7 +13,9 @@ export default function ActiveServicees() {
   const fetchBookedProfessionals = async () => {
     try {
       // Placeholder API call - update with actual backend endpoint
-      const response = await axios.get('/booking/bookedProfessionals');
+      const response = await axios.get('/booking/bookedProfessionals', {
+      params: { customerEmail: email } // ✅ required by backend
+    });
       setBookedProfessionals(response.data);
     } catch (error) {
       console.error(error);

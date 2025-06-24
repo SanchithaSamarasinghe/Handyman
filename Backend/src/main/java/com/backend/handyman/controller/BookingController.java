@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/booking")
 @CrossOrigin(origins = "*") // ✅ allows requests from frontend
@@ -22,5 +25,10 @@ public class BookingController {
                 request.getDate()
         );
         return ResponseEntity.ok(result);
+    }
+    @GetMapping("/bookedProfessionals")
+    public ResponseEntity<List<Map<String, Object>>> getBookedProfessionals(
+            @RequestParam String customerEmail) {
+        return ResponseEntity.ok(bookingService.getBookedProfessionals(customerEmail));
     }
 }
