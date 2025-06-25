@@ -14,6 +14,10 @@ public class Booking {
     private String professionalEmail;
 
     private String date;
+    
+    @Column(nullable = false)
+    private boolean completed = false;
+
 
     // Getters and Setters
     public Long getId() {
@@ -43,4 +47,13 @@ public class Booking {
     public void setDate(String date) {
         this.date = date;
     }
+    
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
+
 }

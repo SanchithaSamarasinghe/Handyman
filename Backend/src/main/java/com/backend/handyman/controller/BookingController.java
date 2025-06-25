@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-
+import com.backend.handyman.model.Booking;
 @RestController
 @RequestMapping("/booking")
 @CrossOrigin(origins = "*") // ✅ allows requests from frontend
@@ -26,9 +26,24 @@ public class BookingController {
         );
         return ResponseEntity.ok(result);
     }
+    @GetMapping("/professional")
+    public ResponseEntity<List<Booking>> getProfessionalBookings(
+            @RequestParam String professionalEmail,
+            @RequestParam boolean completed) {
+        return ResponseEntity.ok(
+            bookingService.getBookingsForProfessional(professionalEmail, completed)
+        );
+    }
+
     @GetMapping("/bookedProfessionals")
     public ResponseEntity<List<Map<String, Object>>> getBookedProfessionals(
             @RequestParam String customerEmail) {
         return ResponseEntity.ok(bookingService.getBookedProfessionals(customerEmail));
     }
+    @PutMapping("/markCompleted/{id}")
+    public ResponseEntity<String> markAsCompleted(@PathVariable Long id) {
+        bookingService.markAsCompleted(id);
+        return ResponseEntity.ok("Marked as completed");
+    }
+
 }

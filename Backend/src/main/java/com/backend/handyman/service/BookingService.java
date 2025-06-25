@@ -56,4 +56,16 @@ public class BookingService {
 
         return result;
     }
+    
+    public void markAsCompleted(Long bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+            .orElseThrow(() -> new RuntimeException("Booking not found"));
+        booking.setCompleted(true);
+        bookingRepository.save(booking);
+    }
+
+    public List<Booking> getBookingsForProfessional(String email, boolean completed) {
+        return bookingRepository.findByProfessionalEmailAndCompleted(email, completed);
+    }
+
 }

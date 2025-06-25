@@ -22,7 +22,7 @@ const login = async () => {
     await AsyncStorage.setItem('userEmail', email); // ✅ save login email
 
     if (role === 'PROFESSIONAL') {
-      navigation.navigate('ProfessionalMainScreen');
+      navigation.navigate('ProfessionalMainScreen', { email });
     } else if (role === 'CUSTOMER') {
       navigation.navigate('CustomerMainScreen', { email });
     } else {

@@ -8,5 +8,8 @@ import java.util.*;
 public interface BookingRepo extends JpaRepository<Booking, Long> {
     boolean existsByProfessionalEmailAndDate(String professionalEmail, String date);
     List<Booking> findByCustomerEmail(String customerEmail);
+    
+    List<Booking> findByProfessionalEmailAndCompleted(String email, boolean completed);
+    
 
 }

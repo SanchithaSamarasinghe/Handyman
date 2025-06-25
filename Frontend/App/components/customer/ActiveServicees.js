@@ -12,11 +12,20 @@ export default function ActiveServicees({ email }) {
 
   const fetchBookedProfessionals = async () => {
     try {
-      // Placeholder API call - update with actual backend endpoint
       const response = await axios.get('/booking/bookedProfessionals', {
-      params: { customerEmail: email } // ✅ required by backend
-    });
-      setBookedProfessionals(response.data);
+        params: { customerEmail: email }
+      });
+
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // clear time for accurate comparison
+
+      const futureBookings = response.data.filter(item => {
+        const bookedDate = new Date(item.bookedDate);
+        bookedDate.setHours(0, 0, 0, 0); // align time
+        return bookedDate >= today;
+      });
+
+      setBookedProfessionals(futureBookings);
     } catch (error) {
       console.error(error);
     }
@@ -51,7 +60,7 @@ export default function ActiveServicees({ email }) {
       <Header />
       {bookedProfessionals.length === 0 ? (
         <View style={styles.emptyContainer}>
-          <Text>No active bookings found.</Text>
+          <Text>No upcoming bookings found.</Text>
         </View>
       ) : (
         <FlatList
@@ -104,5 +113,5 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-},
+  },
 });
